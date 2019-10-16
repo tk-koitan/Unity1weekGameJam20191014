@@ -21,6 +21,7 @@ common_data.scene_queue に
 namespace MainGame
 {
     // すべてのシーンに共通するデータ
+    [System.Serializable]
     public class CommonData
     {
         // シーン
@@ -28,6 +29,7 @@ namespace MainGame
         // オブジェクト
         public List<GameObject> cups;
         public List<GameObject> stages;
+        public GameObject camera;
 
         public CommonData()
         {
@@ -42,14 +44,14 @@ namespace MainGame
         // 各場面のシーン
         BaseScene scene = null;
         // すべてのシーンで共通するデータ
-        private CommonData common_data = null;
+        [SerializeField]
+        private CommonData common_data;
         // シーン名とそれに対応するシーンクラスの辞書
         private Dictionary<string, BaseScene> factory;
 
         // Start is called before the first frame update
         void Start()
         {
-            common_data = new CommonData();
             factory = new Dictionary<string, BaseScene>();
 
             // シーンを登録
