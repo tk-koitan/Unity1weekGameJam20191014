@@ -27,14 +27,14 @@ namespace MainGame
         // シーン
         public Queue<string> scene_queue;
         // オブジェクト
-        public List<GameObject> cups;
+        public List<CupController> cups;
         public List<GameObject> stages;
         public GameObject camera;
 
         public CommonData()
         {
             scene_queue = new Queue<string>();
-            cups = new List<GameObject>();
+            cups = new List<CupController>();
             stages = new List<GameObject>();
         }
     }
@@ -57,7 +57,9 @@ namespace MainGame
             // シーンを登録
             RegisterScene();
 
-            common_data.scene_queue.Enqueue("Start");
+            // sceneが何故かずっとnullなのでしょうがなく
+            scene = factory["Start"];
+            scene.Init(common_data);
         }
 
         // Update is called once per frame
@@ -87,7 +89,7 @@ namespace MainGame
             while (common_data.scene_queue.Count != 0)
             {
                 Assert.IsTrue(factory.ContainsKey(common_data.scene_queue.Peek()), "登録されていないシーンです");
-                if (scene != null) scene.Final(common_data);
+                scene.Final(common_data); // ここ呼ばれない
                 scene = factory[common_data.scene_queue.Dequeue()];
                 scene.Init(common_data);
             }
