@@ -32,5 +32,10 @@ namespace TadaLib
         {
             return time >= limitTime;
         }
+
+        public float GetTime()
+        {
+            return time;
+        }
     }
 }
