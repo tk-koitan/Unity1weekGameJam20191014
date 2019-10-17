@@ -8,16 +8,21 @@ using TadaLib;
 
 namespace MainGame
 {
+    // Inspectorに表示
     [System.Serializable]
     public class CupMoveData
     {
         public float move_time = 0.5f;
 
         public float delay_time = 1.0f;
+
+        public int move_num = 10;
     }
 
     public class CupMoveState : BaseState
     {
+        public bool IsAtari { private set; get; }
+
         // コップのキャッシュ
         private List<CupController> cups;
         // データのキャッシュ
@@ -25,6 +30,8 @@ namespace MainGame
 
         // 時間計測
         private Timer timer;
+
+        private int move_cnt = -1;
 
         // 初期化
         public override void Init(CommonData common_data)
@@ -44,6 +51,12 @@ namespace MainGame
 
             if (timer.IsTimeout())
             {
+                ++move_cnt;
+                if(move_cnt == data.move_num)
+                {
+                    common_data.state_queue.Enqueue("CupSelect");
+                    return;
+                }
                 timer.TimeReset();
                 DoCupMove(common_data);
             }
@@ -53,7 +66,7 @@ namespace MainGame
                 if (cup.IsMoving) cup.Moving();
             }
 
-            if (Input.GetKeyDown(KeyCode.A)) common_data.state_queue.Enqueue("CupSelect");
+            if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("CupSelect");
             Debug.Log("コップ移動　更新");
         }
 
@@ -66,18 +79,34 @@ namespace MainGame
         // コップを移動させる
         private void DoCupMove(CommonData common_data)
         {
-            // コップを2つランダムに選ぶ
             int size = cups.Count;
             if (size < 2) return;
 
-            int first = Random.Range(0, size);
-            int second = Random.Range(0, size - 1);
-            if (first == second) second = size - 1;
+            // コップのインデックスをコピーしてシャッフルする
+            List<int> index_list = new List<int>();
+            for (int i = 0; i < size; ++i) {
+                index_list.Add(i);
+            }
+            // シャッフル
+            for(int i = size - 1; i >= 0; --i)
+            {
+                int target = Random.Range(0, i + 1);
+                int tmp = index_list[i];
+                index_list[i] = index_list[target];
+                index_list[target] = tmp;
+            }
 
-            int round_num = Random.Range(1, 5);
+            // 先頭から2つずつ選ぶ
+            for(int i = 0; i < size / 2; ++i)
+            {
+                int first = index_list[i * 2];
+                int second = index_list[i * 2 + 1];
 
-            cups[first].MoveInit(cups[second].transform.position, data.move_time, round_num);
-            cups[second].MoveInit(cups[first].transform.position, data.move_time, round_num);
+                int round_num = Random.Range(1, 5);
+
+                cups[first].MoveInit(cups[second].transform.position, data.move_time, round_num);
+                cups[second].MoveInit(cups[first].transform.position, data.move_time, round_num);
+            }
         }
     }
 }

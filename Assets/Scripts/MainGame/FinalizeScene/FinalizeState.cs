@@ -16,16 +16,20 @@ namespace MainGame
 
     public class FinalizeState : BaseState
     {
+        // キャッシュ
+        private CupFinalData data;
+
         // 初期化
         public override void Init(CommonData common_data)
         {
+            data = common_data.cup_final_data;
             Debug.Log("メインゲーム終了　初期化");
         }
 
         // 更新
         public override void Proc(CommonData common_data)
         {
-            if (Input.GetKeyDown(KeyCode.A)) common_data.state_queue.Enqueue("Start");
+            if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("Start");
             Debug.Log("メインゲーム終了　更新");
         }
 
