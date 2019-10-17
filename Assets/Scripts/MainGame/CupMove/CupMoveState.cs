@@ -48,6 +48,11 @@ namespace MainGame
                 DoCupMove(common_data);
             }
 
+            foreach(CupController cup in cups)
+            {
+                if (cup.IsMoving) cup.Moving();
+            }
+
             if (Input.GetKeyDown(KeyCode.A)) common_data.state_queue.Enqueue("CupSelect");
             Debug.Log("コップ移動　更新");
         }
@@ -69,8 +74,10 @@ namespace MainGame
             int second = Random.Range(0, size - 1);
             if (first == second) second = size - 1;
 
-            cups[first].Move(cups[second].transform.position, data.move_time, DG.Tweening.Ease.Linear);
-            cups[second].Move(cups[first].transform.position, data.move_time, DG.Tweening.Ease.Linear);
+            int round_num = Random.Range(1, 5);
+
+            cups[first].MoveInit(cups[second].transform.position, data.move_time, round_num);
+            cups[second].MoveInit(cups[first].transform.position, data.move_time, round_num);
         }
     }
 }
