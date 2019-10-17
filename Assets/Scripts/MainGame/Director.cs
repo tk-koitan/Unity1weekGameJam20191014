@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MainGame;
 using UnityEngine.Assertions;
+using TMPro;
 
 // すべてを呼び出すクラス
 
@@ -33,6 +34,12 @@ namespace MainGame
 
         // 各ステートのデータ
         public CupMoveData cup_move_data;
+        public CupSelectData cup_select_data;
+        public CupInitData cup_init_data;
+        public CupFinalData cup_final_data;
+
+        // あたったか
+        public bool is_atari;
 
         public CommonData()
         {
@@ -51,6 +58,9 @@ namespace MainGame
         // シーン名とそれに対応するシーンクラスの辞書
         private Dictionary<string, BaseState> factory;
 
+        [SerializeField]
+        private TextMeshProUGUI text;
+
         // Start is called before the first frame update
         void Start()
         {
@@ -62,6 +72,7 @@ namespace MainGame
             // sceneが何故かずっとnullなのでしょうがなく
             state = factory["Start"];
             state.Init(common_data);
+            text.text = "Start";
         }
 
         // Update is called once per frame
@@ -92,6 +103,7 @@ namespace MainGame
             {
                 Assert.IsTrue(factory.ContainsKey(common_data.state_queue.Peek()), "登録されていないシーンです");
                 state.Final(common_data); // ここ呼ばれない
+                text.text = common_data.state_queue.Peek();
                 state = factory[common_data.state_queue.Dequeue()];
                 state.Init(common_data);
             }

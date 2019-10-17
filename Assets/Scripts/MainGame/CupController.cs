@@ -15,6 +15,8 @@ namespace MainGame
         // 移動しているかどうか
         public bool IsMoving { private set; get; }
 
+        private Animator animator;
+
         private Timer timer;
 
         private Vector3 target_pos;
@@ -26,6 +28,11 @@ namespace MainGame
         private float anguler_velocity;
 
         float dir;
+
+        private void Start()
+        {
+            animator = GetComponent<Animator>();
+        }
 
         // 初期化
         public void Init()
@@ -69,11 +76,17 @@ namespace MainGame
         }
 
         // オープン
-        public void Open(Vector3 rotation, float duration, Ease ease)
+        public void Open()
         {
-            transform.DORotate(
-                rotation,
-                duration).SetEase(ease);
+            // 下の間違ってるかも 書き換えでお願いします
+            // animator.SetTrigger("Open", true);
+        }
+
+        // クローズ
+        public void Close()
+        {
+            // 下の間違ってるかも
+            // animator.SetTrigger("Close", true);
         }
 
         // いーじんぐ
