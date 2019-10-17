@@ -7,7 +7,14 @@ using MainGame;
 
 namespace MainGame
 {
-    public class InitializeScene : BaseScene
+    [System.Serializable]
+    public class CupInitData
+    {
+        [SerializeField]
+        private int hoge;
+    }
+
+    public class InitializeState : BaseState
     {
         // 初期化
         public override void Init(CommonData common_data)
@@ -18,7 +25,7 @@ namespace MainGame
         // 更新
         public override void Proc(CommonData common_data)
         {
-            if (Input.GetKeyDown(KeyCode.A)) common_data.scene_queue.Enqueue("CupMove");
+            if (Input.GetKeyDown(KeyCode.A)) common_data.state_queue.Enqueue("CupMove");
             Debug.Log("メインゲーム開始　更新");
         }
 

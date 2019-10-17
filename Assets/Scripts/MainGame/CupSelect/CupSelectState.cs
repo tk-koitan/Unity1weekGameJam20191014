@@ -7,7 +7,14 @@ using MainGame;
 
 namespace MainGame
 {
-    public class CupSelectScene : BaseScene
+    [System.Serializable]
+    public class CupSelectData
+    {
+        [SerializeField]
+        private int hoge;
+    }
+
+    public class CupSelectState : BaseState
     {
         // 初期化
         public override void Init(CommonData common_data)
@@ -20,7 +27,7 @@ namespace MainGame
         {
 
 
-            if (Input.GetKeyDown(KeyCode.A)) common_data.scene_queue.Enqueue("End");
+            if (Input.GetKeyDown(KeyCode.A)) common_data.state_queue.Enqueue("End");
             Debug.Log("コップ選択　更新");
         }
 
