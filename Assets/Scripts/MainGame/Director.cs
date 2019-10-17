@@ -25,15 +25,18 @@ namespace MainGame
     public class CommonData
     {
         // シーン
-        public Queue<string> scene_queue;
+        public Queue<string> state_queue;
         // オブジェクト
         public List<CupController> cups;
         public List<GameObject> stages;
         public GameObject camera;
 
+        // 各ステートのデータ
+        public CupMoveData cup_move_data;
+
         public CommonData()
         {
-            scene_queue = new Queue<string>();
+            state_queue = new Queue<string>();
             cups = new List<CupController>();
             stages = new List<GameObject>();
         }
@@ -41,25 +44,24 @@ namespace MainGame
 
     public class Director : MonoBehaviour
     {
-        // 各場面のシーン
-        BaseScene scene = null;
+        // 各場面
+        BaseState state = null;
         // すべてのシーンで共通するデータ
-        [SerializeField]
-        private CommonData common_data;
+        public CommonData common_data;
         // シーン名とそれに対応するシーンクラスの辞書
-        private Dictionary<string, BaseScene> factory;
+        private Dictionary<string, BaseState> factory;
 
         // Start is called before the first frame update
         void Start()
         {
-            factory = new Dictionary<string, BaseScene>();
+            factory = new Dictionary<string, BaseState>();
 
             // シーンを登録
-            RegisterScene();
+            RegisterState();
 
             // sceneが何故かずっとnullなのでしょうがなく
-            scene = factory["Start"];
-            scene.Init(common_data);
+            state = factory["Start"];
+            state.Init(common_data);
         }
 
         // Update is called once per frame
@@ -69,16 +71,16 @@ namespace MainGame
             CheckSequence();
 
             // 更新
-            scene.Proc(common_data);
+            state.Proc(common_data);
         }
 
         // シーンを登録
-        private void RegisterScene()
+        private void RegisterState()
         {
-            factory.Add("Start", new InitializeScene());
-            factory.Add("CupMove", new CupMoveScene());
-            factory.Add("CupSelect", new CupSelectScene());
-            factory.Add("End", new FinalizeScene());
+            factory.Add("Start", new InitializeState());
+            factory.Add("CupMove", new CupMoveState());
+            factory.Add("CupSelect", new CupSelectState());
+            factory.Add("End", new FinalizeState());
 
         }
 
@@ -86,12 +88,12 @@ namespace MainGame
         private void CheckSequence()
         {
             // シーン変更 unityの機能で別のシーン(タイトルなど)に移動する時は呼ばれない (Unityなので別に大丈夫)
-            while (common_data.scene_queue.Count != 0)
+            while (common_data.state_queue.Count != 0)
             {
-                Assert.IsTrue(factory.ContainsKey(common_data.scene_queue.Peek()), "登録されていないシーンです");
-                scene.Final(common_data); // ここ呼ばれない
-                scene = factory[common_data.scene_queue.Dequeue()];
-                scene.Init(common_data);
+                Assert.IsTrue(factory.ContainsKey(common_data.state_queue.Peek()), "登録されていないシーンです");
+                state.Final(common_data); // ここ呼ばれない
+                state = factory[common_data.state_queue.Dequeue()];
+                state.Init(common_data);
             }
         }
     }

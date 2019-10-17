@@ -8,24 +8,31 @@ using TadaLib;
 
 namespace MainGame
 {
-    public class CupMoveScene : BaseScene
+    [System.Serializable]
+    public class CupMoveData
+    {
+        public float move_time = 0.5f;
+
+        public float delay_time = 1.0f;
+    }
+
+    public class CupMoveState : BaseState
     {
         // コップのキャッシュ
         private List<CupController> cups;
+        // データのキャッシュ
+        private CupMoveData data;
 
         // 時間計測
         private Timer timer;
-
-        private float move_time = 0.5f;
-
-        private float delay_time = 1.0f;
 
         // 初期化
         public override void Init(CommonData common_data)
         {
             cups = common_data.cups;
+            data = common_data.cup_move_data;
 
-            timer = new Timer(move_time + delay_time);
+            timer = new Timer(data.move_time + data.delay_time);
 
             Debug.Log("コップ移動　初期化");
         }
@@ -38,10 +45,10 @@ namespace MainGame
             if (timer.IsTimeout())
             {
                 timer.TimeReset();
-                DoCupMove();
+                DoCupMove(common_data);
             }
 
-            if (Input.GetKeyDown(KeyCode.A)) common_data.scene_queue.Enqueue("CupSelect");
+            if (Input.GetKeyDown(KeyCode.A)) common_data.state_queue.Enqueue("CupSelect");
             Debug.Log("コップ移動　更新");
         }
 
@@ -52,7 +59,7 @@ namespace MainGame
         }
 
         // コップを移動させる
-        private void DoCupMove()
+        private void DoCupMove(CommonData common_data)
         {
             // コップを2つランダムに選ぶ
             int size = cups.Count;
@@ -62,8 +69,8 @@ namespace MainGame
             int second = Random.Range(0, size - 1);
             if (first == second) second = size - 1;
 
-            cups[first].Move(cups[second].transform.position, move_time, DG.Tweening.Ease.Linear);
-            cups[second].Move(cups[first].transform.position, move_time, DG.Tweening.Ease.Linear);
+            cups[first].Move(cups[second].transform.position, data.move_time, DG.Tweening.Ease.Linear);
+            cups[second].Move(cups[first].transform.position, data.move_time, DG.Tweening.Ease.Linear);
         }
     }
 }
