@@ -8,7 +8,7 @@ using MainGame;
 
 namespace MainGame
 {
-    public abstract class BaseScene : MonoBehaviour
+    public abstract class BaseState : MonoBehaviour
     {
         // 初期化
         public abstract void Init(CommonData common_data);
