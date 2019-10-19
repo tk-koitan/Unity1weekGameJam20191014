@@ -10,8 +10,8 @@ namespace MainGame
     [System.Serializable]
     public class CupSelectData
     {
-        [SerializeField]
-        private int hoge;
+        public float open_time = 2.0f;
+        public float next_scene_time = 4.0f;
     }
 
     public class CupSelectState : BaseState
@@ -21,11 +21,22 @@ namespace MainGame
         // コップのキャッシュ
         private List<CupController> cups;
 
+        Camera camera;
+
+        private float time = 0.0f;
+        private bool end = false;
+        private bool is_clear = false;
+        private bool is_opened = false;
+
         // 初期化
         public override void Init(CommonData common_data)
         {
             data = common_data.cup_select_data;
             cups = common_data.cups;
+            camera = Camera.main;
+            time = 0.0f;
+            end = false;
+            is_opened = false;
         }
 
         // 更新
@@ -33,11 +44,55 @@ namespace MainGame
         {
 
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("End");
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hit_info = new RaycastHit();
+                float max_distance = 100f;
+
+                bool is_hit = Physics.Raycast(ray, out hit_info, max_distance);
+
+                if (is_hit)
+                {
+                    if (hit_info.transform.tag == "Cup")
+                    {
+                        GameObject obj = hit_info.collider.gameObject;
+                        //TODO: ヒットした時の処理;
+                        obj.GetComponent<CupController>().Open(Camera.main.transform);
+                        is_clear = obj.GetComponent<CupController>().HasItem;
+                        end = true;
+                    }
+                }
+            }
+
+            if (end)
+            {
+                time += Time.deltaTime;
+                if(!is_opened && time >= data.open_time)
+                {
+                    Open();
+                }
+                if(time >= data.next_scene_time)
+                {
+                    common_data.state_queue.Enqueue("End");
+                }
+            }
         }
 
         // 終了
         public override void Final(CommonData common_data)
         {
+        }
+
+        private void Open()
+        {
+            Transform cam_transform = Camera.main.transform;
+            foreach (CupController cup in cups)
+            {
+                if (cup.IsOpened) continue;
+                cup.Open(cam_transform);
+            }
         }
     }
 }
