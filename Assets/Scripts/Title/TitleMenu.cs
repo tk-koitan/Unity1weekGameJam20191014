@@ -8,14 +8,14 @@ public class TitleMenu : MonoBehaviour
 {
     [SerializeField] Button buttonToMainGame;
     [SerializeField] Button buttonToPractice;
-    [SerializeField] Button buttonQuit;
+    //[SerializeField] Button buttonQuit;
 
     // Start is called before the first frame update
     void Start()
     {
         buttonToMainGame.onClick.AddListener(ToMainGame);
         buttonToPractice.onClick.AddListener(ToPractice);
-        buttonQuit.onClick.AddListener(GameEnd);
+        //buttonQuit.onClick.AddListener(GameEnd);
     }
 
     // Update is called once per frame

@@ -11,8 +11,12 @@ public class GameEnd : MonoBehaviour
     [SerializeField] Button buttonRetry;
     [SerializeField] Button buttonToNext;
     [SerializeField] TextMeshProUGUI ResultText;
+    [SerializeField] GameObject background;
 
     public static bool Cleared = false;
+
+    Image backgroundImage;
+    int count = 0;
 
     // Start is called before the first frame update
     void Start()
@@ -20,11 +24,20 @@ public class GameEnd : MonoBehaviour
         buttonToTitle.onClick.AddListener(ToTitleScene);
         buttonRetry.onClick.AddListener(Retry);
         buttonToNext.onClick.AddListener(ToNextStage);
+        backgroundImage = background.GetComponent<Image>();
+        Color c = backgroundImage.color;
+        backgroundImage.color = new Color(c.r, c.g, c.b, 0.0f);
+        count = 0;
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(count < 30)
+        {
+            Color c = backgroundImage.color;
+            backgroundImage.color = new Color(c.r, c.g, c.b, (float)count / (30 * 2));
+        }
         if (Cleared)
         {
             buttonToNext.interactable = true;
@@ -39,6 +52,8 @@ public class GameEnd : MonoBehaviour
             buttonRetry.interactable = true;
             ResultText.text = "GAME OVER";
         }
+
+        count++;
     }
 
     //クリア（true）orゲームオーバー（false）をセット
