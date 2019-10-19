@@ -6,6 +6,12 @@ public class AnimationTest : MonoBehaviour
 {
     private Animator animator;
     private bool isOpen = false;
+    [SerializeField]
+    private GameObject openEff;
+    [SerializeField]
+    private GameObject openEff2;
+    [SerializeField]
+    Transform itemPos;
 
     // Start is called before the first frame update
     void Start()
@@ -25,8 +31,24 @@ public class AnimationTest : MonoBehaviour
             else
             {
                 animator.Play("open");
+                Instantiate(openEff, itemPos.position, Quaternion.identity);
+                Instantiate(openEff2, itemPos.position, Quaternion.identity);
             }
             isOpen = !isOpen;
         }
+
+        if (Input.GetKeyDown(KeyCode.Return))
+        {
+            StartCoroutine(testCoroutine());
+        }
+    }
+
+    private IEnumerator testCoroutine()
+    {
+        animator.Play("open");
+        Instantiate(openEff, itemPos.position, Quaternion.identity);
+        Instantiate(openEff2, itemPos.position, Quaternion.identity);
+        yield return new WaitForSeconds(1);
+        animator.Play("close");
     }
 }
