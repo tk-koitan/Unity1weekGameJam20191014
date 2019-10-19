@@ -1,0 +1,18 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 48fdb445a81ed4c65a1abe5a748a23ea, type: 3}
+  m_Name: CupResult
+  m_EditorClassIdentifier: 
+  isLoop: 0
+  BGM: {fileID: 8300000, guid: 59da8add88e2e4daf8140efe6ba1c62d, type: 3}
+  startTime: 0
+  endTime: 0

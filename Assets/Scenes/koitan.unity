@@ -8094,6 +8094,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4687515225905989911, guid: 3a02b2cad362547c8bbd7cbad63b1839,
+        type: 3}
+      propertyPath: NoiseModule.strength.scalar
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3a02b2cad362547c8bbd7cbad63b1839, type: 3}
 --- !u!1001 &4576778267014687501
