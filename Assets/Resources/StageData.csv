@@ -4,6 +4,7 @@ cups num,move duration,move num min,move num max
 4,2,2,2
 4,1,2,2
 8,3,1,2
-2,1,2,3
+4,0.5,2,2
 6,2,3,3
 7,2,3,4
+2,1,2,3

@@ -49,7 +49,7 @@ namespace MainGame
             // コップを追加する
             // コップを読み込む
             //CupController cup = Resources.Load("paper_cup") as CupController;
-            int cup_num = common_data.stage_datas[common_data.dificulity].cups_num;
+            int cup_num = common_data.stage_datas[common_data.dificulity - 1].cups_num;
 
             // コップの間隔
             float each_distance = 0;

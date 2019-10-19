@@ -61,11 +61,11 @@ namespace MainGame
     public class Dificulity
     {
         public int cups_num { private set; get; } // コップの数
-        public int move_duration { private set; get; } // 一回の移動時間
+        public float move_duration { private set; get; } // 一回の移動時間
         public int move_num_min { private set; get; } // 一回で回る回数の最小
         public int move_num_max { private set; get; } // 一回で回る回数の最大
 
-        public Dificulity(int _cups_num, int _move_duration, int _move_num_min, int _move_num_max)
+        public Dificulity(int _cups_num, float _move_duration, int _move_num_min, int _move_num_max)
         {
             cups_num = _cups_num;
             move_duration = _move_duration;
@@ -83,12 +83,16 @@ namespace MainGame
         // シーン名とそれに対応するシーンクラスの辞書
         private Dictionary<string, BaseState> factory;
 
+        public static int dificulity = 1;
+
         [SerializeField]
         private TextMeshProUGUI text;
 
         // Start is called before the first frame update
         private void Start()
         {
+            common_data.dificulity = dificulity;
+
             factory = new Dictionary<string, BaseState>();
 
             // シーンを登録
@@ -147,7 +151,7 @@ namespace MainGame
             for (int i = 1; i < data.Count; ++i)
             {
                 int cup_num = int.Parse(data[i][0]);
-                int move_duration = int.Parse(data[i][1]);
+                float move_duration = float.Parse(data[i][1]);
                 int move_num_min = int.Parse(data[i][2]);
                 int move_num_max = int.Parse(data[i][3]);
 

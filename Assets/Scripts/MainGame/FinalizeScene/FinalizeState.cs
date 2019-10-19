@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MainGame;
+using UnityEngine.SceneManagement;
 
 // 終了処理
 
@@ -23,6 +24,7 @@ namespace MainGame
         public override void Init(CommonData common_data)
         {
             data = common_data.cup_final_data;
+            SceneManager.LoadScene("GameEndScene", LoadSceneMode.Additive);
         }
 
         // 更新

@@ -61,6 +61,7 @@ namespace MainGame
                         //TODO: ヒットした時の処理;
                         obj.GetComponent<CupController>().Open(Camera.main.transform);
                         is_clear = obj.GetComponent<CupController>().HasItem;
+                        GameEnd.Cleared = is_clear;
                         end = true;
                     }
                 }
