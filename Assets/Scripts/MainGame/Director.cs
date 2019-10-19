@@ -25,8 +25,10 @@ namespace MainGame
     [System.Serializable]
     public class CommonData
     {
+        public bool is_stage_select = false;
         // 難易度
         public int dificulity = 1;
+        public int phase = 1;
         public List<Dificulity> stage_datas;
 
         // シーン
@@ -84,6 +86,7 @@ namespace MainGame
         private Dictionary<string, BaseState> factory;
 
         public static int dificulity = 1;
+        public static int phase = 1;
 
         [SerializeField]
         private TextMeshProUGUI text;
@@ -92,6 +95,7 @@ namespace MainGame
         private void Start()
         {
             common_data.dificulity = dificulity;
+            common_data.phase = phase;
 
             factory = new Dictionary<string, BaseState>();
 
@@ -99,7 +103,9 @@ namespace MainGame
             RegisterState();
 
             // csvファイルからステージのデータを持ってくる
-            LoadStageData();
+            if (common_data.is_stage_select)
+                common_data.stage_datas.Add(new Dificulity(5, 1.0f, 1, 2));
+            else LoadStageData();
 
             // sceneが何故かずっとnullなのでしょうがなく
             state = factory["Start"];

@@ -63,6 +63,11 @@ namespace MainGame
                         is_clear = obj.GetComponent<CupController>().HasItem;
                         GameEnd.Cleared = is_clear;
                         end = true;
+                        if (common_data.is_stage_select)
+                        {
+                            Director.dificulity = obj.GetComponent<CupController>().dificlity;
+                            Debug.Log(Director.dificulity);
+                        }
                     }
                 }
             }

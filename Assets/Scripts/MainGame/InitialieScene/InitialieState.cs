@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using MainGame;
+using TadaLib;
 
 // 初期化するシーン
 
@@ -49,7 +50,12 @@ namespace MainGame
             // コップを追加する
             // コップを読み込む
             //CupController cup = Resources.Load("paper_cup") as CupController;
-            int cup_num = common_data.stage_datas[common_data.dificulity - 1].cups_num;
+            int cup_num;
+
+            if (common_data.is_stage_select) {
+                cup_num = 5;
+            }
+            else cup_num = common_data.stage_datas[common_data.dificulity - 1].cups_num;
 
             // コップの間隔
             float each_distance = 0;
@@ -70,21 +76,49 @@ namespace MainGame
                 dis += each_distance;
             }
 
-            // 当たりのコップを設定する
-            int has_item_index = Random.Range(0, cups.Count);
-
-            // 当たりのコップのところに果物等を置く
-            common_data.item = Instantiate(common_data.item_data, cups[has_item_index].transform.position, Quaternion.identity);
-            common_data.item.transform.parent = cups[has_item_index].transform;
-            common_data.item.transform.localPosition = cups[has_item_index].ItemPos;
-
+            if (common_data.is_stage_select)
             {
-                int cnt = -1;
-                foreach (CupController cup in cups)
+                // csvファイルから各コップに入る数字を読み込む
+                List<string[]> datas = CSVReader.LoadCSVFile("StageDificulity");
+                int[] dificulities = new int[5];
+                for (int i = 0; i < cup_num; ++i)
                 {
-                    ++cnt;
-                    //cup.gameObject.SetActive(false);
-                    cup.Init(cnt == has_item_index);
+                    dificulities[i] = int.Parse(datas[common_data.phase - 1][i]);
+                }
+
+                //// 当たりのコップのところに果物等を置く
+                //common_data.item = Instantiate(common_data.item_data, cups[has_item_index].transform.position, Quaternion.identity);
+                //common_data.item.transform.parent = cups[has_item_index].transform;
+                //common_data.item.transform.localPosition = cups[has_item_index].ItemPos;
+
+                {
+                    int cnt = -1;
+                    foreach (CupController cup in cups)
+                    {
+                        ++cnt;
+                        //cup.gameObject.SetActive(false);
+                        cup.Init(false, dificulities[cnt]);
+                    }
+                }
+            }
+            else
+            {
+                // 当たりのコップを設定する
+                int has_item_index = Random.Range(0, cups.Count);
+
+                // 当たりのコップのところに果物等を置く
+                common_data.item = Instantiate(common_data.item_data, cups[has_item_index].transform.position, Quaternion.identity);
+                common_data.item.transform.parent = cups[has_item_index].transform;
+                common_data.item.transform.localPosition = cups[has_item_index].ItemPos;
+
+                {
+                    int cnt = -1;
+                    foreach (CupController cup in cups)
+                    {
+                        ++cnt;
+                        //cup.gameObject.SetActive(false);
+                        cup.Init(cnt == has_item_index);
+                    }
                 }
             }
 
@@ -101,7 +135,7 @@ namespace MainGame
                 Transform cam_transform = Camera.main.transform;
                 foreach (CupController cup in cups)
                 {
-                    if (!cup.HasItem) continue;
+                    if (!cup.HasItem && !common_data.is_stage_select) continue;
                     cup.Open(cam_transform);
                 }
                 ++state;
@@ -112,7 +146,7 @@ namespace MainGame
                 Transform cam_transform = Camera.main.transform;
                 foreach (CupController cup in cups)
                 {
-                    if (!cup.HasItem) continue;
+                    if (!cup.HasItem && !common_data.is_stage_select) continue;
                     cup.Close(cam_transform);
                 }
                 ++state;

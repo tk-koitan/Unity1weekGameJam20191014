@@ -23,6 +23,8 @@ namespace MainGame
         private Vector3 item_pos;
         public Vector3 ItemPos { private set { item_pos = value; } get { return item_pos; } }
 
+        // ステージセレクト画面での難易度
+        public int dificlity = 1;
 
         private Timer timer;
 
@@ -37,9 +39,10 @@ namespace MainGame
         float dir;
 
         // 初期化
-        public void Init(bool has_item)
+        public void Init(bool has_item, int _dificulity = 1)
         {
             HasItem = has_item;
+            dificlity = _dificulity;
             IsOpened = false;
         }
 

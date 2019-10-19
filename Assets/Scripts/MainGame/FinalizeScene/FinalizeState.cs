@@ -24,7 +24,12 @@ namespace MainGame
         public override void Init(CommonData common_data)
         {
             data = common_data.cup_final_data;
-            SceneManager.LoadScene("GameEndScene", LoadSceneMode.Additive);
+            if (common_data.is_stage_select)
+            {
+                SceneManager.LoadScene("MainGameScene");
+            }
+            else
+                SceneManager.LoadScene("GameEndScene", LoadSceneMode.Additive);
         }
 
         // 更新
