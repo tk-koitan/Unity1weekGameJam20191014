@@ -20,6 +20,9 @@ namespace MainGame
         [SerializeField]
         private Vector3 default_cup_pos;
         public Vector3 DefaultCupPos { private set { default_cup_pos = value; } get { return default_cup_pos; } }
+
+        public float close_time = 2.0f;
+        public float apeal_time = 2.0f;
     }
 
     public class InitializeState : BaseState
@@ -30,9 +33,16 @@ namespace MainGame
         // コップのキャッシュ
         private List<CupController> cups;
 
+        private float time = 0.0f;
+
+        int state = 0;
+
         // 初期化
         public override void Init(CommonData common_data)
         {
+            time = 0.0f;
+            state = 0;
+
             cups = common_data.cups;
             data = common_data.cup_init_data;
 
@@ -45,7 +55,7 @@ namespace MainGame
             float each_distance = 0;
             if (cup_num != 1) each_distance = data.StageWidth / (cup_num - 1);
             float dis = each_distance / 2;
-            if(cup_num % 2 == 1)
+            if (cup_num % 2 == 1)
             {
                 CupController new_cup = Instantiate(common_data.cup_data, data.DefaultCupPos, Quaternion.identity);
                 cups.Add(new_cup);
@@ -60,20 +70,54 @@ namespace MainGame
                 dis += each_distance;
             }
 
-            foreach(CupController cup in cups)
+            // 当たりのコップを設定する
+            int has_item_index = Random.Range(0, cups.Count);
+
+            // 当たりのコップのところに果物等を置く
+            common_data.item = Instantiate(common_data.item_data, cups[has_item_index].transform.position, Quaternion.identity);
+            common_data.item.transform.parent = cups[has_item_index].transform;
+            common_data.item.transform.localPosition = cups[has_item_index].ItemPos;
+
             {
-                cup.transform.localEulerAngles = new Vector3(-90.0f, 0f, 0f);
+                int cnt = -1;
+                foreach (CupController cup in cups)
+                {
+                    ++cnt;
+                    //cup.gameObject.SetActive(false);
+                    cup.Init(cnt == has_item_index);
+                }
             }
 
-
             // コップを上から降らせる
-            //StartCoroutine(Flow());
-
+            //StartCoroutine(CupAppear())
         }
 
         // 更新
         public override void Proc(CommonData common_data)
         {
+            time += Time.deltaTime;
+            if(state == 0 && time >= data.close_time)
+            {
+                Transform cam_transform = Camera.main.transform;
+                foreach (CupController cup in cups)
+                {
+                    if (!cup.HasItem) continue;
+                    cup.Open(cam_transform);
+                }
+                ++state;
+            }
+
+            if(state == 1 && time >= data.close_time + data.apeal_time)
+            {
+                Transform cam_transform = Camera.main.transform;
+                foreach (CupController cup in cups)
+                {
+                    if (!cup.HasItem) continue;
+                    cup.Close(cam_transform);
+                }
+                ++state;
+                common_data.state_queue.Enqueue("CupMove");
+            }
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("CupMove");
         }
 
@@ -82,9 +126,21 @@ namespace MainGame
         {
         }
 
-        private IEnumerator Flow()
+        private IEnumerator CupAppear()
         {
-            yield return new WaitForSeconds(0.5f);
+            Transform cam_transform = Camera.main.transform;
+            foreach (CupController cup in cups)
+            {
+                // カメラの方向を向くようにする
+                cup.transform.LookAt(cam_transform);
+                cup.transform.localEulerAngles = new Vector3(0f, cup.transform.eulerAngles.y + Mathf.Rad2Deg * Mathf.PI, 0f);
+
+                cup.gameObject.SetActive(true);
+                cup.Close(cam_transform);
+
+                yield return new WaitForSeconds(1.0f / cups.Count);
+            }
+            yield return new WaitForSeconds(1.0f);
         }
     }
 }

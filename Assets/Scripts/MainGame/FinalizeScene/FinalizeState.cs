@@ -39,6 +39,7 @@ namespace MainGame
                 Destroy(common_data.cups[i].gameObject);
             }
             common_data.cups.Clear();
+            Destroy(common_data.item);
             common_data.dificulity = Mathf.Min(7, common_data.dificulity + 1);
         }
     }

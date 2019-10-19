@@ -14,8 +14,15 @@ namespace MainGame
 
         // 移動しているかどうか
         public bool IsMoving { private set; get; }
-
+        public bool IsOpened { private set; get; }
+        public bool HasItem { private set; get; }
+   
+        [SerializeField]
         private Animator animator;
+        [SerializeField]
+        private Vector3 item_pos;
+        public Vector3 ItemPos { private set { item_pos = value; } get { return item_pos; } }
+
 
         private Timer timer;
 
@@ -29,15 +36,11 @@ namespace MainGame
 
         float dir;
 
-        private void Start()
-        {
-            animator = GetComponent<Animator>();
-        }
-
         // 初期化
-        public void Init()
+        public void Init(bool has_item)
         {
-            
+            HasItem = has_item;
+            IsOpened = false;
         }
 
         // 移動の準備 移動 目的地 移動時間 回転数
@@ -76,17 +79,23 @@ namespace MainGame
         }
 
         // オープン
-        public void Open()
+        public void Open(Transform lookat)
         {
-            // 下の間違ってるかも 書き換えでお願いします
-            // animator.SetTrigger("Open", true);
+            IsOpened = true;
+            // カメラの方向を向くようにする
+            transform.LookAt(lookat);
+            transform.localEulerAngles = new Vector3(0f, transform.eulerAngles.y + Mathf.Rad2Deg * Mathf.PI, 0f);
+            animator.Play("open");
         }
 
         // クローズ
-        public void Close()
+        public void Close(Transform lookat)
         {
-            // 下の間違ってるかも
-            // animator.SetTrigger("Close", true);
+            IsOpened = false;
+            // カメラの方向を向くようにする
+            transform.LookAt(lookat);
+            transform.localEulerAngles = new Vector3(0f, transform.eulerAngles.y + Mathf.Rad2Deg * Mathf.PI, 0f);
+            animator.Play("close");
         }
 
         // いーじんぐ
