@@ -26,7 +26,6 @@ namespace MainGame
         {
             data = common_data.cup_select_data;
             cups = common_data.cups;
-            Debug.Log("コップ選択　初期化");
         }
 
         // 更新
@@ -34,13 +33,11 @@ namespace MainGame
         {
 
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("End");
-            Debug.Log("コップ選択　更新");
         }
 
         // 終了
         public override void Final(CommonData common_data)
         {
-            Debug.Log("コップ選択　終了");
         }
     }
 }

@@ -12,11 +12,8 @@ namespace MainGame
     [System.Serializable]
     public class CupMoveData
     {
-        public float move_time = 0.5f;
-
-        public float delay_time = 1.0f;
-
         public int move_num = 10;
+        public float delay_time = 1.0f;
     }
 
     public class CupMoveState : BaseState
@@ -32,16 +29,21 @@ namespace MainGame
         private Timer timer;
 
         private int move_cnt = -1;
+        private int move_num_min;
+        private int move_num_max;
+        private float move_duration;
 
         // 初期化
         public override void Init(CommonData common_data)
         {
             cups = common_data.cups;
             data = common_data.cup_move_data;
+            move_num_min = common_data.stage_datas[common_data.dificulity].move_num_min;
+            move_num_max = common_data.stage_datas[common_data.dificulity].move_num_max;
+            move_duration = common_data.stage_datas[common_data.dificulity].move_duration;
 
-            timer = new Timer(data.move_time + data.delay_time);
+            timer = new Timer(move_duration + data.delay_time);
 
-            Debug.Log("コップ移動　初期化");
         }
 
         // 更新
@@ -67,13 +69,11 @@ namespace MainGame
             }
 
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("CupSelect");
-            Debug.Log("コップ移動　更新");
         }
 
         // 終了
         public override void Final(CommonData common_data)
         {
-            Debug.Log("コップ移動　終了");
         }
 
         // コップを移動させる
@@ -102,10 +102,10 @@ namespace MainGame
                 int first = index_list[i * 2];
                 int second = index_list[i * 2 + 1];
 
-                int round_num = Random.Range(1, 5);
+                int round_num = Random.Range(move_num_min, move_num_max + 1);
 
-                cups[first].MoveInit(cups[second].transform.position, data.move_time, round_num);
-                cups[second].MoveInit(cups[first].transform.position, data.move_time, round_num);
+                cups[first].MoveInit(cups[second].transform.position, move_duration, round_num);
+                cups[second].MoveInit(cups[first].transform.position, move_duration, round_num);
             }
         }
     }
