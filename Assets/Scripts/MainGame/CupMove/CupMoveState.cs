@@ -36,6 +36,7 @@ namespace MainGame
         // 初期化
         public override void Init(CommonData common_data)
         {
+            move_cnt = 0;
             cups = common_data.cups;
             data = common_data.cup_move_data;
             move_num_min = common_data.stage_datas[common_data.dificulity].move_num_min;

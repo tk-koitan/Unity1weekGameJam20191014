@@ -33,7 +33,9 @@ namespace MainGame
         public Queue<string> state_queue;
         // オブジェクト
         public CupController cup_data;
+        public GameObject item_data;
         public List<CupController> cups;
+        public GameObject item;
         public List<GameObject> stages;
         public GameObject camera;
 
