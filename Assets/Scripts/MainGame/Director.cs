@@ -25,9 +25,14 @@ namespace MainGame
     [System.Serializable]
     public class CommonData
     {
+        // 難易度
+        public int dificulity = 1;
+        public List<Dificulity> stage_datas;
+
         // シーン
         public Queue<string> state_queue;
         // オブジェクト
+        public CupController cup_data;
         public List<CupController> cups;
         public List<GameObject> stages;
         public GameObject camera;
@@ -46,6 +51,24 @@ namespace MainGame
             state_queue = new Queue<string>();
             cups = new List<CupController>();
             stages = new List<GameObject>();
+            stage_datas = new List<Dificulity>();
+        }
+    }
+
+    // 難易度
+    public class Dificulity
+    {
+        public int cups_num { private set; get; } // コップの数
+        public int move_duration { private set; get; } // 一回の移動時間
+        public int move_num_min { private set; get; } // 一回で回る回数の最小
+        public int move_num_max { private set; get; } // 一回で回る回数の最大
+
+        public Dificulity(int _cups_num, int _move_duration, int _move_num_min, int _move_num_max)
+        {
+            cups_num = _cups_num;
+            move_duration = _move_duration;
+            move_num_min = _move_num_min;
+            move_num_max = _move_num_max;
         }
     }
 
@@ -62,12 +85,15 @@ namespace MainGame
         private TextMeshProUGUI text;
 
         // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             factory = new Dictionary<string, BaseState>();
 
             // シーンを登録
             RegisterState();
+
+            // csvファイルからステージのデータを持ってくる
+            LoadStageData();
 
             // sceneが何故かずっとnullなのでしょうがなく
             state = factory["Start"];
@@ -76,7 +102,7 @@ namespace MainGame
         }
 
         // Update is called once per frame
-        void Update()
+        private void Update()
         {
             // シーンを変更するかどうか
             CheckSequence();
@@ -106,6 +132,25 @@ namespace MainGame
                 text.text = common_data.state_queue.Peek();
                 state = factory[common_data.state_queue.Dequeue()];
                 state.Init(common_data);
+            }
+        }
+
+        // csvファイルからステージのデータを持ってくる
+        private void LoadStageData()
+        {
+            // csvファイルから難易度データを持ってくる
+            List<string[]> data = TadaLib.CSVReader.LoadCSVFile("StageData");
+
+            // 2行目以降をint型に置き換える
+            for (int i = 1; i < data.Count; ++i)
+            {
+                int cup_num = int.Parse(data[i][0]);
+                int move_duration = int.Parse(data[i][1]);
+                int move_num_min = int.Parse(data[i][2]);
+                int move_num_max = int.Parse(data[i][3]);
+
+                common_data.stage_datas.Add(new Dificulity(cup_num, 
+                    move_duration, move_num_min, move_num_max));
             }
         }
     }

@@ -23,20 +23,23 @@ namespace MainGame
         public override void Init(CommonData common_data)
         {
             data = common_data.cup_final_data;
-            Debug.Log("メインゲーム終了　初期化");
         }
 
         // 更新
         public override void Proc(CommonData common_data)
         {
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("Start");
-            Debug.Log("メインゲーム終了　更新");
         }
 
         // 終了
         public override void Final(CommonData common_data)
         {
-            Debug.Log("メインゲーム終了　終了");
+            for(int i = common_data.cups.Count - 1; i >= 0 ; --i)
+            {
+                Destroy(common_data.cups[i].gameObject);
+            }
+            common_data.cups.Clear();
+            common_data.dificulity = Mathf.Min(7, common_data.dificulity + 1);
         }
     }
 }
