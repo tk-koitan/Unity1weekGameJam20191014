@@ -39,10 +39,18 @@ namespace MainGame
             move_cnt = 0;
             cups = common_data.cups;
             data = common_data.cup_move_data;
-            move_num_min = common_data.stage_datas[common_data.dificulity].move_num_min;
-            move_num_max = common_data.stage_datas[common_data.dificulity].move_num_max;
-            move_duration = common_data.stage_datas[common_data.dificulity].move_duration;
-
+            if (common_data.is_stage_select)
+            {
+                move_num_min = 1;
+                move_num_max = 2;
+                move_duration = 1.0f;
+            }
+            else
+            {
+                move_num_min = common_data.stage_datas[common_data.dificulity].move_num_min;
+                move_num_max = common_data.stage_datas[common_data.dificulity].move_num_max;
+                move_duration = common_data.stage_datas[common_data.dificulity].move_duration;
+            }
             timer = new Timer(move_duration + data.delay_time);
 
         }
