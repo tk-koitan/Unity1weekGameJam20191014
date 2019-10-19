@@ -7,9 +7,7 @@ public class AnimationTest : MonoBehaviour
     private Animator animator;
     private bool isOpen = false;
     [SerializeField]
-    private GameObject openEff;
-    [SerializeField]
-    private GameObject openEff2;
+    private GameObject[] openEff;
     [SerializeField]
     Transform itemPos;
 
@@ -22,17 +20,19 @@ public class AnimationTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
-            if(isOpen)
+            if (isOpen)
             {
                 animator.Play("close");
             }
             else
             {
                 animator.Play("open");
-                Instantiate(openEff, itemPos.position, Quaternion.identity);
-                Instantiate(openEff2, itemPos.position, Quaternion.identity);
+                for (int i = 0; i < openEff.Length; i++)
+                {
+                    EmitParticle(openEff[i]);
+                }
             }
             isOpen = !isOpen;
         }
@@ -46,9 +46,17 @@ public class AnimationTest : MonoBehaviour
     private IEnumerator testCoroutine()
     {
         animator.Play("open");
-        Instantiate(openEff, itemPos.position, Quaternion.identity);
-        Instantiate(openEff2, itemPos.position, Quaternion.identity);
+        for (int i = 0; i < openEff.Length; i++)
+        {
+            EmitParticle(openEff[i]);
+        }
         yield return new WaitForSeconds(1);
         animator.Play("close");
+    }
+
+    private void EmitParticle(GameObject par)
+    {
+        GameObject obj = Instantiate(par, itemPos.position, Quaternion.identity);
+        Destroy(obj, obj.GetComponent<ParticleSystem>().duration);
     }
 }
