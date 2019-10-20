@@ -29,7 +29,11 @@ namespace MainGame
                 SceneManager.LoadScene("MainGameScene");
             }
             else
+            {
+                if(GameEnd.Cleared) foreach (ParticleSystem effect in common_data.fireworks) effect.Play();
+                ++Director.phase;// = Mathf.Min(9, Director.phase + 1);
                 SceneManager.LoadScene("GameEndScene", LoadSceneMode.Additive);
+            }
         }
 
         // 更新

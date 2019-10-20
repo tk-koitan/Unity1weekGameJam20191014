@@ -41,6 +41,8 @@ namespace MainGame
         public List<GameObject> stages;
         public GameObject camera;
 
+        public List<ParticleSystem> fireworks;
+
         // 各ステートのデータ
         public CupMoveData cup_move_data;
         public CupSelectData cup_select_data;

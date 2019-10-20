@@ -3060,6 +3060,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 2020205431}
   item_pos: {x: 0, y: 0.2, z: 0}
+  effects:
+  - {fileID: 0}
+  - {fileID: 0}
+  - {fileID: 0}
   dificlity: 1
 --- !u!95 &2020205431
 Animator:

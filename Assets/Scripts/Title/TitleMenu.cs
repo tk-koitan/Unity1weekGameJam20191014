@@ -27,7 +27,7 @@ public class TitleMenu : MonoBehaviour
     public void ToMainGame()
     {
         //はじめる
-        SceneManager.LoadScene("MainGameScene");
+        SceneManager.LoadScene("StageSelect");
     }
 
     public void ToPractice()
