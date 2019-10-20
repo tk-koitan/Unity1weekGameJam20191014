@@ -25,7 +25,7 @@ namespace MainGame
         {
             data = common_data.cup_final_data;
             if (GameEnd.Cleared && !common_data.is_stage_select) MusicManager.Play(BgmCode.CupClear);
-            else MusicManager.Play(BgmCode.CupResult);
+            else if(!common_data.is_stage_select) MusicManager.Play(BgmCode.CupResult);
             if (common_data.is_stage_select)
             {
                 FadeManager.FadeOut(1.0f, "MainGameScene");
