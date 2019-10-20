@@ -43,8 +43,9 @@ namespace MainGame
         public override void Proc(CommonData common_data)
         {
 
+#if UNITY_ENGINE
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("End");
-
+#endif
             if (Input.GetMouseButtonDown(0))
             {
                 Ray ray = camera.ScreenPointToRay(Input.mousePosition);

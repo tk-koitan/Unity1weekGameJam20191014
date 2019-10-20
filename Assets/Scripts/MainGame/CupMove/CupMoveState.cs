@@ -77,7 +77,9 @@ namespace MainGame
                 if (cup.IsMoving) cup.Moving();
             }
 
+#if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("CupSelect");
+#endif
         }
 
         // 終了

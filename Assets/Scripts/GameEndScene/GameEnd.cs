@@ -29,7 +29,7 @@ public class GameEnd : MonoBehaviour
         Color c = backgroundImage.color;
         backgroundImage.color = new Color(c.r, c.g, c.b, 0.0f);
         count = 0;
-        score = MainGame.Director.phase;
+        score = MainGame.Director.phase - 1;
 
         if (!Cleared)
         {

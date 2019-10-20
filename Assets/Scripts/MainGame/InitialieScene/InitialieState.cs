@@ -179,7 +179,9 @@ namespace MainGame
                 ++state;
                 common_data.state_queue.Enqueue("CupMove");
             }
+            #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.Space)) common_data.state_queue.Enqueue("CupMove");
+#endif
         }
 
         // 終了
