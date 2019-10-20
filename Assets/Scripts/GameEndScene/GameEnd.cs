@@ -17,6 +17,7 @@ public class GameEnd : MonoBehaviour
 
     Image backgroundImage;
     int count = 0;
+    int score;
 
     // Start is called before the first frame update
     void Start()
@@ -28,6 +29,11 @@ public class GameEnd : MonoBehaviour
         Color c = backgroundImage.color;
         backgroundImage.color = new Color(c.r, c.g, c.b, 0.0f);
         count = 0;
+        score = MainGame.Director.phase;
+        if (!Cleared)
+        {
+            naichilab.RankingLoader.Instance.SendScoreAndShowRanking(score);
+        }
     }
 
     // Update is called once per frame

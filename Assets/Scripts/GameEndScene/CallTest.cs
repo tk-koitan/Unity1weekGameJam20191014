@@ -5,7 +5,6 @@ using UnityEngine.SceneManagement;
 
 public class CallTest : MonoBehaviour
 {
-    private ApealText appealText;
     // Start is called before the first frame update
     void Start()
     {
