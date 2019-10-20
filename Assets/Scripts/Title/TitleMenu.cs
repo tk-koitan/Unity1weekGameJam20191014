@@ -16,6 +16,13 @@ public class TitleMenu : MonoBehaviour
         buttonToMainGame.onClick.AddListener(ToMainGame);
         buttonToPractice.onClick.AddListener(ToPractice);
         //buttonQuit.onClick.AddListener(GameEnd);
+
+        //Music
+        MusicManager.Play(BgmCode.CupTitle);
+
+        //Initialize Director
+        MainGame.Director.phase = 1;
+        MainGame.Director.dificulity = 1;
     }
 
     // Update is called once per frame
