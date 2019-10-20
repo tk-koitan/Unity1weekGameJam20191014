@@ -83,7 +83,7 @@ public class GameEnd : MonoBehaviour
     void ToNextStage()
     {
         //つぎのステージへ
-        SceneManager.LoadScene("MainGameScene");
+        SceneManager.LoadScene("StageSelect");
     }
 
 }

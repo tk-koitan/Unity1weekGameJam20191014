@@ -47,9 +47,9 @@ namespace MainGame
             }
             else
             {
-                move_num_min = common_data.stage_datas[common_data.dificulity].move_num_min;
-                move_num_max = common_data.stage_datas[common_data.dificulity].move_num_max;
-                move_duration = common_data.stage_datas[common_data.dificulity].move_duration;
+                move_num_min = common_data.stage_datas[common_data.dificulity - 1].move_num_min;
+                move_num_max = common_data.stage_datas[common_data.dificulity - 1].move_num_max;
+                move_duration = common_data.stage_datas[common_data.dificulity - 1].move_duration;
             }
             timer = new Timer(move_duration + data.delay_time);
 
@@ -113,8 +113,10 @@ namespace MainGame
 
                 int round_num = Random.Range(move_num_min, move_num_max + 1);
 
-                cups[first].MoveInit(cups[second].transform.position, move_duration, round_num);
-                cups[second].MoveInit(cups[first].transform.position, move_duration, round_num);
+                int dir = Random.Range(0, 2);
+                bool inverse = (dir == 0);
+                cups[first].MoveInit(cups[second].transform.position, move_duration, round_num, inverse);
+                cups[second].MoveInit(cups[first].transform.position, move_duration, round_num, inverse);
             }
         }
     }

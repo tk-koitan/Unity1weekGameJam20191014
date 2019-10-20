@@ -23,6 +23,9 @@ namespace MainGame
         private Vector3 item_pos;
         public Vector3 ItemPos { private set { item_pos = value; } get { return item_pos; } }
 
+        [SerializeField]
+        private ParticleSystem[] effects;
+
         // ステージセレクト画面での難易度
         public int dificlity = 1;
 
@@ -36,7 +39,8 @@ namespace MainGame
         // 角速度
         private float anguler_velocity;
 
-        float dir;
+        private bool inverse;
+        private float initial_theta;
 
         // 初期化
         public void Init(bool has_item, int _dificulity = 1)
@@ -47,19 +51,26 @@ namespace MainGame
         }
 
         // 移動の準備 移動 目的地 移動時間 回転数
-        public void MoveInit(Vector3 _target_pos, float _duration, int _round_num = 1)
+        public void MoveInit(Vector3 _target_pos, float _duration, int _round_num = 1, bool _inverse = false, bool _change_pos = false)
         {
             IsMoving = true;
             target_pos = _target_pos;
             timer = new Timer(_duration);
-            dir = (transform.position.z - _target_pos.z >= 0f)? 1.0f : -1.0f;
+            inverse = _inverse;
             duration = _duration;
 
             // 移動速度などを決める
             radius = Vector3.Distance(transform.position, _target_pos) / 2.0f;
             center_pos = (transform.position + _target_pos) / 2.0f;
+
+            Vector3 dir = center_pos - transform.position;
+            initial_theta = Mathf.Atan2(dir.z, dir.x) + Mathf.PI; 
+            float dif = -0.5f;
+            if (_change_pos) dif = -1f;
             // 各速度
-            anguler_velocity = 2.0f * Mathf.PI / (_duration / (_round_num - 0.5f));
+            anguler_velocity = 2.0f * Mathf.PI / (_duration / (_round_num - dif));
+
+            if (_change_pos) target_pos = transform.position;
 
         }
 
@@ -76,14 +87,19 @@ namespace MainGame
                 return;
             }
 
-            float theta = anguler_velocity * SineInOut(timer.GetTime(), duration, 0f, duration);
-            theta += Mathf.PI / 2;
-            transform.position = center_pos + dir * new Vector3(radius * Mathf.Cos(theta), 0.0f, radius * Mathf.Sin(theta));
+            float theta = anguler_velocity * SineInOut((inverse)? duration - timer.GetTime() : timer.GetTime(), duration, 0f, duration);
+            theta += initial_theta;
+            transform.position = center_pos + new Vector3(radius * Mathf.Cos(theta), 0.0f, radius * Mathf.Sin(theta));
         }
 
         // オープン
-        public void Open(Transform lookat)
+        public void Open(Transform lookat, bool is_effect_on = false)
         {
+            if (is_effect_on)
+            {
+                if (HasItem) for (int i = 1; i < effects.Length; ++i) effects[i].Play();
+                else effects[0].Play();
+            }
             IsOpened = true;
             // カメラの方向を向くようにする
             transform.LookAt(lookat);
