@@ -83,9 +83,11 @@ namespace MainGame
             }
             for (int i = 0; i < cup_num / 2; ++i)
             {
-                float dis_x = Random.Range(0f, data.StageHeight / 2.0f);
+                float dis_x = Random.Range(-data.StageHeight / 2.0f, data.StageHeight / 2.0f);
                 if (common_data.is_stage_select) dis_x = 0f;
                 CupController new_cup = Instantiate(common_data.cup_datas[cup_data], data.DefaultCupPos + new Vector3(dis_x, dis_y, dis_z), Quaternion.identity);
+                dis_x = Random.Range(-data.StageHeight / 2.0f, data.StageHeight / 2.0f);
+                if (common_data.is_stage_select) dis_x = 0f;
                 CupController new_cup2 = Instantiate(common_data.cup_datas[cup_data], data.DefaultCupPos + new Vector3(dis_x, dis_y, -dis_z), Quaternion.identity);
                 cups.Add(new_cup);
                 cups.Add(new_cup2);
