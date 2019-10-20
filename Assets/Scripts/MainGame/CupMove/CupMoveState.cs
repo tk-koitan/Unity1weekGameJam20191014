@@ -43,7 +43,7 @@ namespace MainGame
             {
                 move_num_min = 1;
                 move_num_max = 2;
-                move_duration = 0.8f;
+                move_duration = 2.0f;
             }
             else
             {
