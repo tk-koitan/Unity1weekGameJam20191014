@@ -59,7 +59,7 @@ namespace MainGame
                     {
                         GameObject obj = hit_info.collider.gameObject;
                         //TODO: ヒットした時の処理;
-                        obj.GetComponent<CupController>().Open(Camera.main.transform);
+                        obj.GetComponent<CupController>().Open(Camera.main.transform, !common_data.is_stage_select);
                         is_clear = obj.GetComponent<CupController>().HasItem;
                         GameEnd.Cleared = is_clear;
                         end = true;
@@ -76,7 +76,7 @@ namespace MainGame
                 time += Time.deltaTime;
                 if(!is_opened && time >= data.open_time)
                 {
-                    Open();
+                    Open(common_data);
                 }
                 if(time >= data.next_scene_time)
                 {
@@ -90,13 +90,13 @@ namespace MainGame
         {
         }
 
-        private void Open()
+        private void Open(CommonData common_data)
         {
             Transform cam_transform = Camera.main.transform;
             foreach (CupController cup in cups)
             {
                 if (cup.IsOpened) continue;
-                cup.Open(cam_transform);
+                cup.Open(cam_transform, !common_data.is_stage_select);
             }
         }
     }

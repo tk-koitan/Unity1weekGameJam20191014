@@ -52,6 +52,9 @@ namespace MainGame
             cups = common_data.cups;
             data = common_data.cup_init_data;
 
+            if (common_data.is_stage_select) MusicManager.Play(1);
+            else MusicManager.Play(0);
+
             // コップを追加する
             // コップを読み込む
             //CupController cup = Resources.Load("paper_cup") as CupController;
@@ -65,20 +68,24 @@ namespace MainGame
             // コップの間隔
             float each_distance = 0;
             if (cup_num != 1) each_distance = data.StageWidth / (cup_num - 1);
-            float dis = each_distance / 2;
+            float dis_z = each_distance / 2;
             if (cup_num % 2 == 1)
             {
-                CupController new_cup = Instantiate(common_data.cup_data, data.DefaultCupPos, Quaternion.identity);
+                float dis_x = Random.Range(0f, data.StageHeight / 2.0f);
+                if (common_data.is_stage_select) dis_x = 0f;
+                CupController new_cup = Instantiate(common_data.cup_data, data.DefaultCupPos + new Vector3(dis_x, 0f, 0f), Quaternion.identity);
                 cups.Add(new_cup);
-                dis = each_distance;
+                dis_z = each_distance;
             }
             for (int i = 0; i < cup_num / 2; ++i)
             {
-                CupController new_cup = Instantiate(common_data.cup_data, data.DefaultCupPos + new Vector3(0f, 0f, dis), Quaternion.identity);
-                CupController new_cup2 = Instantiate(common_data.cup_data, data.DefaultCupPos - new Vector3(0f, 0f, dis), Quaternion.identity);
+                float dis_x = Random.Range(0f, data.StageHeight / 2.0f);
+                if (common_data.is_stage_select) dis_x = 0f;
+                CupController new_cup = Instantiate(common_data.cup_data, data.DefaultCupPos + new Vector3(dis_x, 0f, dis_z), Quaternion.identity);
+                CupController new_cup2 = Instantiate(common_data.cup_data, data.DefaultCupPos - new Vector3(dis_x, 0f, dis_z), Quaternion.identity);
                 cups.Add(new_cup);
                 cups.Add(new_cup2);
-                dis += each_distance;
+                dis_z += each_distance;
             }
 
             if (common_data.is_stage_select)
@@ -88,10 +95,10 @@ namespace MainGame
                 int[] dificulities = new int[5];
                 for (int i = 0; i < cup_num; ++i)
                 {
-                    dificulities[i] = int.Parse(datas[common_data.phase - 1][i]);
+                    dificulities[i] = int.Parse(datas[Mathf.Min(8, common_data.phase - 1)][i]);
                     data.Texts[i].text = dificulities[i].ToString();
                     // 一定の確率でジョーカーに
-                    if (Random.Range(1, 101) <= 10)
+                    if (Random.Range(1, 101) <= 10 + common_data.phase)
                     {
                         dificulities[i] = 9;
                         data.Texts[i].text = "J";
@@ -150,7 +157,7 @@ namespace MainGame
                 foreach (CupController cup in cups)
                 {
                     if (!cup.HasItem && !common_data.is_stage_select) continue;
-                    cup.Open(cam_transform);
+                    cup.Open(cam_transform, !common_data.is_stage_select);
                 }
                 ++state;
             }
