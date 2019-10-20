@@ -71,7 +71,7 @@ public class GameEnd : MonoBehaviour
     void ToTitleScene()
     {
         //タイトルへ
-        SceneManager.LoadScene("TitleScene");
+        FadeManager.FadeOut(1.0f, "TitleScene");
     }
 
     void Retry()
@@ -83,7 +83,7 @@ public class GameEnd : MonoBehaviour
     void ToNextStage()
     {
         //つぎのステージへ
-        SceneManager.LoadScene("StageSelect");
+        FadeManager.FadeOut(1.0f, "StageSelect");
     }
 
 }

@@ -95,6 +95,7 @@ namespace MainGame
         // Start is called before the first frame update
         private void Start()
         {
+            FadeManager.FadeIn(1.0f);
             common_data.dificulity = dificulity;
             common_data.phase = phase;
 

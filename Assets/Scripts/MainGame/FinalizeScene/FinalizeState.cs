@@ -24,9 +24,11 @@ namespace MainGame
         public override void Init(CommonData common_data)
         {
             data = common_data.cup_final_data;
+            if (GameEnd.Cleared) MusicManager.Play(BgmCode.CupClear);
+            else MusicManager.Play(BgmCode.CupResult);
             if (common_data.is_stage_select)
             {
-                SceneManager.LoadScene("MainGameScene");
+                FadeManager.FadeOut(1.0f, "MainGameScene");
             }
             else
             {
