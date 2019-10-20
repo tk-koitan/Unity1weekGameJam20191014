@@ -36,11 +36,13 @@ public class MusicTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.I))
         {
             MusicManager.FadeIn(2);
+            FadeManager.FadeIn(2);
         }
 
         if (Input.GetKeyDown(KeyCode.O))
         {
             MusicManager.FadeOut(2);
+            FadeManager.FadeOut(2);
         }
     }
 }
