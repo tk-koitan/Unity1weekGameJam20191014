@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class MusicManager : MonoBehaviour
 {
@@ -65,6 +66,11 @@ public class MusicManager : MonoBehaviour
         instance.isloop = instance.bgm[_index].isLoop;
     }
 
+    public static void Play(BgmCode bgmCode)
+    {
+        Play((int)bgmCode);
+    }
+
     public static void Stop()
     {
         instance.isIntro = true;
@@ -76,4 +82,22 @@ public class MusicManager : MonoBehaviour
         instance.isIntro = true;
         audioSource.Play();
     }
+
+    public static void FadeIn(float duration)
+    {
+        audioSource.DOFade(1, duration);
+    }
+
+    public static void FadeOut(float duration)
+    {
+        audioSource.DOFade(0, duration);
+    }
+}
+
+public enum BgmCode
+{
+    CupBattle = 0,
+    CupTitle = 1,
+    CupClear = 2,
+    CupResult = 3
 }
