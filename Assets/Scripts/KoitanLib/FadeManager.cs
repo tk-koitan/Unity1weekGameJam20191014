@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using UnityEngine.SceneManagement;
 
 public class FadeManager : MonoBehaviour
 {    
@@ -16,6 +17,7 @@ public class FadeManager : MonoBehaviour
     private Canvas fadeCanvas;
 
     public static RawImage image;
+    private static bool is_fading = false;
 
     private void Awake()
     {
@@ -44,11 +46,14 @@ public class FadeManager : MonoBehaviour
 
     public static void FadeIn(float duration)
     {
-        image.DOFade(1, duration);
+        is_fading = false;
+        image.DOFade(0, duration);
     }
 
-    public static void FadeOut(float duration)
+    public static void FadeOut(float duration, string next_scene_name)
     {
-        image.DOFade(0, duration);
+        if (is_fading) return;
+        is_fading = true;
+        image.DOFade(1, duration).OnComplete(() => SceneManager.LoadScene(next_scene_name));
     }
 }

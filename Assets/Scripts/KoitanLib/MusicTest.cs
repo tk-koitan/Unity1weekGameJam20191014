@@ -42,7 +42,7 @@ public class MusicTest : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.O))
         {
             MusicManager.FadeOut(2);
-            FadeManager.FadeOut(2);
+            //FadeManager.FadeOut(2);
         }
     }
 }

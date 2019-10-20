@@ -65,7 +65,8 @@ namespace MainGame
             }
             else cup_num = common_data.stage_datas[common_data.dificulity - 1].cups_num;
 
-            int cup_data = Random.Range(0, common_data.cup_datas.Count);
+            int cup_data = 0;
+            if (common_data.cup_datas.Count == 2 && Random.Range(0, common_data.cup_datas.Count * 100) <= 20) cup_data = 1;
             float dis_y = 0.0f;
             if (cup_data == 1) dis_y = 1.5f;
             // コップの間隔
