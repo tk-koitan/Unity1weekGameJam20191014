@@ -15,22 +15,34 @@ public class MusicTest : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Alpha0))
         {
-            MusicManager.Play(0);
+            MusicManager.Play(BgmCode.CupBattle);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
-            MusicManager.Play(1);
+            MusicManager.Play(BgmCode.CupTitle);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha2))
         {
-            MusicManager.Play(2);
+            MusicManager.Play(BgmCode.CupClear);
         }
 
         if (Input.GetKeyDown(KeyCode.Alpha3))
         {
-            MusicManager.Play(3);
+            MusicManager.Play(BgmCode.CupResult);
+        }
+
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            MusicManager.FadeIn(2);
+            FadeManager.FadeIn(2);
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            MusicManager.FadeOut(2);
+            FadeManager.FadeOut(2);
         }
     }
 }

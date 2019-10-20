@@ -15,4 +15,4 @@ MonoBehaviour:
   isLoop: 1
   BGM: {fileID: 8300000, guid: 82b5eb06c9c1344e6a41d49836008225, type: 3}
   startTime: 0
-  endTime: 67.7
+  endTime: 67.5
