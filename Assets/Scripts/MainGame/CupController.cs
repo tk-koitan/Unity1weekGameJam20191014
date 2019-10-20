@@ -64,7 +64,8 @@ namespace MainGame
             center_pos = (transform.position + _target_pos) / 2.0f;
 
             Vector3 dir = center_pos - transform.position;
-            initial_theta = Mathf.Atan2(dir.z, dir.x) + Mathf.PI; 
+            initial_theta = Mathf.Atan2(dir.z, dir.x) + Mathf.PI;
+            if (_inverse) initial_theta += Mathf.PI;
             float dif = -0.5f;
             if (_change_pos) dif = -1f;
             // 各速度

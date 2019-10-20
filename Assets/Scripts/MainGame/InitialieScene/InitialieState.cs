@@ -65,6 +65,9 @@ namespace MainGame
             }
             else cup_num = common_data.stage_datas[common_data.dificulity - 1].cups_num;
 
+            int cup_data = Random.Range(0, common_data.cup_datas.Count);
+            float dis_y = 0.0f;
+            if (cup_data == 1) dis_y = 1.5f;
             // コップの間隔
             float each_distance = 0;
             if (cup_num != 1) each_distance = data.StageWidth / (cup_num - 1);
@@ -73,7 +76,7 @@ namespace MainGame
             {
                 float dis_x = Random.Range(0f, data.StageHeight / 2.0f);
                 if (common_data.is_stage_select) dis_x = 0f;
-                CupController new_cup = Instantiate(common_data.cup_data, data.DefaultCupPos + new Vector3(dis_x, 0f, 0f), Quaternion.identity);
+                CupController new_cup = Instantiate(common_data.cup_datas[cup_data], data.DefaultCupPos + new Vector3(dis_x, dis_y, 0f), Quaternion.identity);
                 cups.Add(new_cup);
                 dis_z = each_distance;
             }
@@ -81,8 +84,8 @@ namespace MainGame
             {
                 float dis_x = Random.Range(0f, data.StageHeight / 2.0f);
                 if (common_data.is_stage_select) dis_x = 0f;
-                CupController new_cup = Instantiate(common_data.cup_data, data.DefaultCupPos + new Vector3(dis_x, 0f, dis_z), Quaternion.identity);
-                CupController new_cup2 = Instantiate(common_data.cup_data, data.DefaultCupPos - new Vector3(dis_x, 0f, dis_z), Quaternion.identity);
+                CupController new_cup = Instantiate(common_data.cup_datas[cup_data], data.DefaultCupPos + new Vector3(dis_x, dis_y, dis_z), Quaternion.identity);
+                CupController new_cup2 = Instantiate(common_data.cup_datas[cup_data], data.DefaultCupPos + new Vector3(dis_x, dis_y, -dis_z), Quaternion.identity);
                 cups.Add(new_cup);
                 cups.Add(new_cup2);
                 dis_z += each_distance;
@@ -128,7 +131,9 @@ namespace MainGame
                 int has_item_index = Random.Range(0, cups.Count);
 
                 // 当たりのコップのところに果物等を置く
-                common_data.item = Instantiate(common_data.item_data, cups[has_item_index].transform.position, Quaternion.identity);
+
+                int item_index = Random.Range(0, common_data.item_datas.Count);
+                common_data.item = Instantiate(common_data.item_datas[item_index], cups[has_item_index].transform.position, Quaternion.identity);
                 common_data.item.transform.parent = cups[has_item_index].transform;
                 common_data.item.transform.localPosition = cups[has_item_index].ItemPos;
 

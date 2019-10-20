@@ -360,12 +360,14 @@ MonoBehaviour:
     is_stage_select: 1
     dificulity: 1
     phase: 1
-    cup_data: {fileID: 2020205430}
-    item_data: {fileID: 491104157}
+    cup_datas:
+    - {fileID: 2020205430}
+    item_datas: []
     cups: []
     item: {fileID: 491104157}
     stages: []
     camera: {fileID: 0}
+    fireworks: []
     cup_move_data:
       move_num: 5
       delay_time: 0
