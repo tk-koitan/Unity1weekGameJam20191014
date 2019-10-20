@@ -13,6 +13,7 @@ public class TitleMenu : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        FadeManager.FadeIn(1.0f);
         buttonToMainGame.onClick.AddListener(ToMainGame);
         buttonToPractice.onClick.AddListener(ToPractice);
         //buttonQuit.onClick.AddListener(GameEnd);
@@ -34,13 +35,13 @@ public class TitleMenu : MonoBehaviour
     public void ToMainGame()
     {
         //はじめる
-        SceneManager.LoadScene("StageSelect");
+        //SceneManager.LoadScene("StageSelect");
+        FadeManager.FadeOut(1.0f, "StageSelect");
     }
 
     public void ToPractice()
     {
-        //練習ステージ
-        SceneManager.LoadScene("MainGameScene");
+        FadeManager.FadeOut(1.0f, "MainGameScene");
     }
 
     public void GameEnd()
