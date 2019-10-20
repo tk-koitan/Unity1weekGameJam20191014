@@ -53,7 +53,7 @@ namespace MainGame
 
                 bool is_hit = Physics.Raycast(ray, out hit_info, max_distance);
 
-                if (is_hit)
+                if (is_hit && !end)
                 {
                     if (hit_info.transform.tag == "Cup")
                     {
@@ -66,7 +66,6 @@ namespace MainGame
                         if (common_data.is_stage_select)
                         {
                             Director.dificulity = obj.GetComponent<CupController>().dificlity;
-                            Debug.Log(Director.dificulity);
                         }
                     }
                 }

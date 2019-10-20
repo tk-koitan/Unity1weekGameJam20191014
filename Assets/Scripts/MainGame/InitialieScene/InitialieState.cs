@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using MainGame;
 using TadaLib;
+using TMPro;
 
 // 初期化するシーン
 
@@ -21,6 +22,10 @@ namespace MainGame
         [SerializeField]
         private Vector3 default_cup_pos;
         public Vector3 DefaultCupPos { private set { default_cup_pos = value; } get { return default_cup_pos; } }
+
+        [SerializeField]
+        private List<TextMeshPro> texts;
+        public List<TextMeshPro> Texts { private set { texts = value; } get { return texts; } }
 
         public float close_time = 2.0f;
         public float apeal_time = 2.0f;
@@ -84,12 +89,21 @@ namespace MainGame
                 for (int i = 0; i < cup_num; ++i)
                 {
                     dificulities[i] = int.Parse(datas[common_data.phase - 1][i]);
+                    data.Texts[i].text = dificulities[i].ToString();
+                    // 一定の確率でジョーカーに
+                    if (Random.Range(1, 101) <= 10)
+                    {
+                        dificulities[i] = 9;
+                        data.Texts[i].text = "J";
+                        data.Texts[i].color = Color.red;
+                    }
                 }
 
-                //// 当たりのコップのところに果物等を置く
-                //common_data.item = Instantiate(common_data.item_data, cups[has_item_index].transform.position, Quaternion.identity);
-                //common_data.item.transform.parent = cups[has_item_index].transform;
-                //common_data.item.transform.localPosition = cups[has_item_index].ItemPos;
+                // テキストを配置する
+                for (int i = 0; i < cup_num; ++i) {
+                    data.Texts[i].transform.parent = cups[i].transform;
+                    data.Texts[i].transform.localPosition = cups[i].ItemPos;
+                }
 
                 {
                     int cnt = -1;

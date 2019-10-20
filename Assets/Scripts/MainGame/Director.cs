@@ -47,9 +47,6 @@ namespace MainGame
         public CupInitData cup_init_data;
         public CupFinalData cup_final_data;
 
-        // あたったか
-        public bool is_atari;
-
         public CommonData()
         {
             state_queue = new Queue<string>();
@@ -91,11 +88,21 @@ namespace MainGame
         [SerializeField]
         private TextMeshProUGUI text;
 
+        private ApealText appealText;
+
         // Start is called before the first frame update
         private void Start()
         {
             common_data.dificulity = dificulity;
             common_data.phase = phase;
+
+            appealText = GetComponent<ApealText>();
+            if (common_data.is_stage_select)
+            {
+                appealText.DOAppeal(0);
+                appealText.ChangeText("フェーズ" + phase.ToString(), 1);
+                appealText.DOAppeal(1);
+            }
 
             factory = new Dictionary<string, BaseState>();
 
