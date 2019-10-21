@@ -12,6 +12,10 @@ public class CameraControll : MonoBehaviour
     [SerializeField] float angle_y = 0;
     [SerializeField] float angle_y_min = 5;
     [SerializeField] float angle_y_max = 60;
+
+    private Vector2 oldTouchPos;
+    private Vector2 delta;
+    public float touchSpeed = 0.3f;
     // Start is called before the first frame update
     void Start()
     {
@@ -27,6 +31,25 @@ public class CameraControll : MonoBehaviour
         //入力取得
         float input_x = Input.GetAxis("Horizontal");
         float input_y = Input.GetAxis("Vertical");
+
+        //タッチ対応
+        if(Input.touchCount==2)
+        {
+            if(Input.touches[1].phase == TouchPhase.Began)
+            {
+                oldTouchPos = (Input.touches[0].position + Input.touches[1].position) / 2;
+                delta = Vector2.zero;
+            }
+            else
+            {
+                Vector2 touchPos = (Input.touches[0].position + Input.touches[1].position) / 2;
+                delta = (touchPos - oldTouchPos) * touchSpeed;
+                oldTouchPos = touchPos;
+            }
+            input_x = delta.x;
+            input_y = delta.y;
+        }
+
         if (ReverseVertical)
         {
             //必要なら反転

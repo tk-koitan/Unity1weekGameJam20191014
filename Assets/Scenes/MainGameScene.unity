@@ -1340,6 +1340,7 @@ MonoBehaviour:
   angle_y: 60
   angle_y_min: 5
   angle_y_max: 60
+  touchSpeed: 0.3
 --- !u!1 &680044039
 GameObject:
   m_ObjectHideFlags: 0
